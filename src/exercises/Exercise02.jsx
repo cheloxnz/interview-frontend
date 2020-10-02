@@ -1,33 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-/* THE FIX STARTS HERE */
+const Counter = ({ name, value, onChange }) => {
 
-// state data for 3 counters
-const data = [
-  { id: 1, value: 0 },
-  { id: 2, value: 0 },
-  { id: 3, value: 0 },
-];
+  const handlerOnChange = e => {
+    const newValue = parseInt(e.target.value)
+    // In case type a negative number
+    if (Number.isInteger(newValue)) {
+      onChange({
+        newValue,
+        index: parseInt(name)
+      })
+    }
+    // Set the value in '0' if we delete the input
+    else if (!e.target.value) {
+      onChange({
+        newValue: 0,
+        index: parseInt(name)
+      })
+    }
+  }
 
-// Counter Component
-const Counter = ({ value }) => {
   return (
     <div className="d-flex my-2">
       <strong>{value}</strong>
       <div className="ml-2">
-        <button className="btn btn-danger mr-1">-</button>
-        <button className="btn btn-success">+</button>
+        <input type='number' placeholder={0} style={{ textAlign: 'end', width: 75 }}
+          onChange={handlerOnChange} />
       </div>
     </div>
   );
 };
 
+const Total = ({ value }) => {
+  return (
+    <strong>Total = {value}</strong>
+  )
+}
+
 const GroupOfCounters = () => {
+  const [data, setData] = useState([
+    { id: 1, value: 0 },
+    { id: 2, value: 0 },
+    { id: 3, value: 0 },
+    { id: 4, value: 0 },
+  ])
+
+  const [total, setTotal] = useState(0)
+
+  const handlerOnChange = ({ newValue, index }) => {
+    //the new value
+    //index --- position in data
+    //clone the array data
+    var changeData = data
+    //change variables on the object
+    changeData[index] = {
+      ...changeData[index],
+      value: newValue
+    }
+    //total values
+    const sum = changeData.map(d => d.value).reduce((e, f) => e + f)
+    //set changes
+    setData(changeData)
+    setTotal(sum)
+  }
+
   return (
     <div>
-      {data.map((counter) => (
-        <Counter key={counter.id} value={counter.value} />
+      {/* Send in the name the position on the array */}
+      {/* Send in the onChange the handlerOnChange */}
+      {data.map((counter, index) => (
+        <Counter key={counter.id} name={index}
+          value={counter.value} onChange={handlerOnChange} />
       ))}
+      <Total value={total} />
     </div>
   );
 };

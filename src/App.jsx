@@ -6,30 +6,41 @@ import Exercise02 from './exercises/Exercise02'
 import Exercise03 from './exercises/Exercise03'
 
 const Welcome = () => {
+
   return <div>
-    <h2>Welcome!</h2>
-    <p>
+    <h2 style={{ backgroundColor: 'black', color: 'white', textAlign: 'center', fontSize: 40 }}>Welcome!</h2>
+    <p style={{ backgroundColor: 'black', color: 'white', textAlign: 'center', fontSize: 25 }}>
       Please take a look at the 3 exercises, each of them contain instructions.
     </p>
   </div>
 }
 
-const App = () => {
-  return <div className="container">
-    <h1 class="py-4">FrontEnd Interview Exercises</h1>
 
-    <ul className="nav nav-tabs">
-      <li className="nav-item">
-        <Link to="/" className="nav-link active">Homepage</Link>
+const NavLink = props => {
+  return (<Link {...props}
+    getProps={({ isCurrent }) => {
+      return {
+        className: isCurrent ? "nav-link active" : "nav-link"
+      }
+    }} />)
+};
+
+const App = () => {
+
+  return <div className="container">
+    <Link to="/" style={{ textDecoration: 'none' }}><h1 className="py-4" style={{ color: 'white', backgroundColor: 'black', borderRadius: 10, textAlign: 'center' }}>FrontEnd Interview Exercises</h1></Link>
+    <ul className="nav nav-tabs" style={{ justifyContent: 'center' }}>
+      <li className="nav-item" style={{ backgroundColor: '#c4c4c4' }}>
+        <NavLink to="/exercise01" style={{ color: 'black' }}>
+          Exercise 01</NavLink>
       </li>
-      <li className="nav-item">
-        <Link to="/exercise01" className="nav-link">Exercise 01</Link>
+      <li className="nav-item" style={{ backgroundColor: '#c4c4c4' }}>
+        <NavLink to="/exercise02" style={{ color: 'black' }}>
+          Exercise 02</NavLink>
       </li>
-      <li className="nav-item">
-        <Link to="/exercise02" className="nav-link">Exercise 02</Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/exercise03" className="nav-link">Exercise 03</Link>
+      <li className="nav-item" style={{ backgroundColor: '#c4c4c4' }}>
+        <NavLink to="/exercise03" style={{ color: 'black' }}>
+          Exercise 03</NavLink>
       </li>
     </ul>
 

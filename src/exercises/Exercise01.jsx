@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const TOTAL_USERS = 6
 
 const Exercise01 = () => {
-  const [users, setUsers] = React.useState([])
+  const [users, setUsers] = useState([])
 
   /* THE FIX STARTS HERE */
-  
+
   /*
   NOTE
   -------
@@ -16,25 +16,28 @@ const Exercise01 = () => {
   5 users, then we need to hit the URL 5 times).
   */
 
-  React.useEffect(() => {
-    for(var i = 1; i < TOTAL_USERS; i++) {
+  const searchU = async () => {
+    const usersArr = [];
+
+    for (var i = 1; i < TOTAL_USERS; i++) {
       // We fetch the user
-      fetch('https://jsonplaceholder.typicode.com/users?id=' + i)
+      const resp = await fetch('https://jsonplaceholder.typicode.com/users?id=' + i)
         .then(r => r.json()) // converts response to obj
         .then(user => user[0]) // maps [{..}] to {..} since the API provides an array
-        .then(user => {
-          setUsers([
-            ...users,
-            user
-          ])
-        })
+
+      usersArr.push(resp)
     }
+    setUsers(usersArr)
+  }
+
+  useEffect(() => {
+    searchU()
   }, [])
 
   /* THE FIX ENDS HERE */
 
   return (
-    <div className="container">
+    <div className="container" style={{ borderWidth: 2, borderColor: 'black', borderRadius: 10 }}>
       <h2>Instructions</h2>
 
       <p>We are currently trying to render the first 5 users we obtain from a REST API. The problem is that, for some reason, it's only rendering one of them. Another thing we've noticed is that, sometimes, it renders different user.</p>
